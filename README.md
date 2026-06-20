@@ -10,8 +10,9 @@ No build step, no framework — just HTML, CSS, and a little vanilla JS.
 public/
 ├── index.html              # the page (markup + inline SVG logo)
 └── static/
-    ├── styles.css          # all styling, animations, responsive rules
-    └── script.js           # email validation + signup success state
+    ├── css/styles.css         # all styling, animations, responsive rules
+    ├── js/script.js           # email validation + signup success state
+    └── img/favicons           # all images for the website
 ```
 
 Everything that ships to the web lives under `public/`. That folder is the
