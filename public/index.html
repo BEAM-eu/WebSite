@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BEAM — Bioengineering &amp; Machine Learning, Europe</title>
+<meta name="description" content="Building the bridge between AI and bioengineering across Europe. Something is coming." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Space+Grotesk:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/png" href="static/img/BEAM_logo_full_name.png" />
+<link rel="apple-touch-icon" href="static/img/BEAM_logo_full_name.png" />
+<link rel="stylesheet" href="static/css/styles.css" />
+</head>
+<body>
+  <main class="stage">
+    <!-- BEAM mark -->
+    <svg class="logo" viewBox="0 0 300 230" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="BEAM logo">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#1e3a8a"/>
+          <stop offset="0.5" stop-color="#2563eb"/>
+          <stop offset="1" stop-color="#f2c14e"/>
+        </linearGradient>
+      </defs>
+      <!-- arms (centered around 150,105; s≈58, sw≈14) -->
+      <polyline class="arm" points="68.8,47 122.7,47 150,105 122.7,163 68.8,163"
+        stroke="url(#bg)" stroke-width="14" stroke-linejoin="round" stroke-linecap="round"/>
+      <polyline class="arm" points="150,105 177.3,163 231.2,163"
+        stroke="url(#bg)" stroke-width="14" stroke-linejoin="round" stroke-linecap="round"/>
+      <circle class="node n1" cx="68.8"  cy="47"  r="15" fill="#1e3a8a"/>
+      <circle class="node n2" cx="68.8"  cy="163" r="15" fill="#1d4ed8"/>
+      <circle class="node n3" cx="231.2" cy="163" r="15" fill="#2563eb"/>
+      <circle class="node n4" cx="184.2" cy="80.6" r="12.3" fill="#38bdf8"/>
+      <circle class="core" cx="150" cy="105" r="18.6" fill="#f2c14e"/>
+      <!-- travelling beam pulse rides the left arm into the core -->
+      <circle class="pulse" r="4.5" fill="#fff7e0"
+        style="offset-path:path('M 68.8 47 L 122.7 47 L 150 105');"/>
+    </svg>
+
+    <div class="wordmark">
+      <h1>BEAM</h1>
+      <div class="tag">Bioengineering · Machine&nbsp;Learning · Europe</div>
+    </div>
+
+    <div class="phrase">
+      <p>Building the bridge between AI and bioengineering across Europe.
+        <span class="ask">Are you in?</span></p>
+    </div>
+
+    <div class="signup" id="signup">
+      <div class="field">
+        <input id="email" type="email" inputmode="email" autocomplete="email"
+               placeholder="your@email.edu" aria-label="Email address" />
+        <button class="btn" id="join" type="button">Request access</button>
+      </div>
+      <div class="note" id="note">No spam. One signal when we surface.</div>
+    </div>
+
+    <div class="done" id="done">
+      <div class="check">You're on the list.</div>
+      <div class="sub">Stay tuned — the beam is forming.</div>
+    </div>
+  </main>
+
+  <footer>Stealth · MMXXVI · Europe</footer>
+
+  <script src="static/js/script.js" defer></script>
+</body>
+</html>
