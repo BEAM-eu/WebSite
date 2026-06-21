@@ -1,6 +1,12 @@
 // BEAM — stealth landing page
-// Handles the email signup gesture. There's no backend yet:
-// see the marked spot in submit() to wire this to Resend (or any form endpoint).
+// Signup is wired to Buttondown via its embed-subscribe endpoint.
+//
+// ┌─────────────────────────────────────────────────────────────┐
+// │  SET THIS: replace YOUR-USERNAME with your Buttondown        │
+// │  username (the handle you pick when you create your          │
+// │  Buttondown account). Nothing else needs to change.          │
+// └─────────────────────────────────────────────────────────────┘
+var BUTTONDOWN_USERNAME = 'BEAM-eu';
 
 (function () {
   var email = document.getElementById('email');
@@ -13,29 +19,52 @@
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
   }
 
+  function setNote(msg, warn) {
+    note.textContent = msg;
+    note.style.color = warn ? '#f2c14e' : '';
+  }
+
+  function succeed() {
+    signup.classList.add('hide');
+    done.classList.add('show');
+  }
+
   function submit() {
     var v = email.value.trim();
     if (!valid(v)) {
-      note.textContent = 'Enter a valid email to join.';
-      note.style.color = '#f2c14e';
+      setNote('Enter a valid email to join.', true);
       email.focus();
       return;
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // WIRE UP BACKEND HERE
-    // Send `v` (the email) to your Resend endpoint / form handler.
-    // Example:
-    //   fetch('/api/subscribe', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ email: v })
-    //   });
-    // Until then, we just show the success state.
-    // ─────────────────────────────────────────────────────────────
+    // Guard against deploying with the placeholder still in place.
+    if (BUTTONDOWN_USERNAME === 'YOUR-USERNAME') {
+      setNote('Signup not configured yet (set Buttondown username).', true);
+      return;
+    }
 
-    signup.classList.add('hide');
-    done.classList.add('show');
+    join.disabled = true;
+    setNote('Joining…', false);
+
+    var endpoint =
+      'https://buttondown.com/api/emails/embed-subscribe/' +
+      encodeURIComponent(BUTTONDOWN_USERNAME);
+
+    var body = new FormData();
+    body.append('email', v);
+
+    // Buttondown's embed endpoint accepts a simple form POST.
+    // We send it and show success on completion. (The request is
+    // cross-origin; we don't need to read the response to confirm.)
+    fetch(endpoint, { method: 'POST', body: body, mode: 'no-cors' })
+      .then(function () {
+        succeed();
+      })
+      .catch(function () {
+        // Network failure — let them try again.
+        join.disabled = false;
+        setNote('Something went wrong. Try again?', true);
+      });
   }
 
   join.addEventListener('click', submit);
@@ -43,7 +72,6 @@
     if (e.key === 'Enter') submit();
   });
   email.addEventListener('input', function () {
-    note.textContent = 'No spam. One signal when we surface.';
-    note.style.color = '';
+    setNote('No spam. One signal when we surface.', false);
   });
 })();
