@@ -1,5 +1,5 @@
 // BEAM — stealth landing page
-// Signup is wired to Buttondown via its embed-subscribe endpoint.
+// Signup posts to Buttondown via its embed-subscribe endpoint.
 //
 // ┌─────────────────────────────────────────────────────────────┐
 // │  SET THIS: replace YOUR-USERNAME with your Buttondown        │
@@ -50,18 +50,26 @@ var BUTTONDOWN_USERNAME = 'BEAM-eu';
       'https://buttondown.com/api/emails/embed-subscribe/' +
       encodeURIComponent(BUTTONDOWN_USERNAME);
 
+    // Buttondown's embed endpoint expects a form POST with `email`
+    // AND the hidden `embed=1` field — without `embed=1` the
+    // submission is silently ignored.
     var body = new FormData();
     body.append('email', v);
+    body.append('embed', '1');
 
-    // Buttondown's embed endpoint accepts a simple form POST.
-    // We send it and show success on completion. (The request is
-    // cross-origin; we don't need to read the response to confirm.)
+    // NOTE on `no-cors`: Buttondown's embed endpoint does not return
+    // CORS headers, so the browser will not let us read the response
+    // status or body. We therefore cannot programmatically distinguish
+    // success from failure here — we treat a completed network request
+    // as success. The real source of truth is your Buttondown
+    // Subscribers list. (If you want true success/failure detection,
+    // use a serverless proxy that calls the Buttondown API with your
+    // API key and returns a readable response.)
     fetch(endpoint, { method: 'POST', body: body, mode: 'no-cors' })
       .then(function () {
         succeed();
       })
       .catch(function () {
-        // Network failure — let them try again.
         join.disabled = false;
         setNote('Something went wrong. Try again?', true);
       });
